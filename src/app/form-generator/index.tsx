@@ -12,19 +12,35 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { generateForm } from "@/actions/generateForm";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 
 type Props = {};
+
+const initialState: { message: string; data?: any } = {
+    message: "",
+};
+
+export const HandleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const { pending } = useFormStatus();
+    return (
+        <Button type='submit' disabled={pending}>
+            {pending ? "Generating..." : "Generate"}
+        </Button>
+    );
+};
+
 const FormGenerator = (props: Props) => {
+    const [state, formAction] = useFormState(generateForm, initialState);
     const [isDialogueOpen, setIsDialogueOpen] = useState(false);
 
-    const onSubmit = () => {
+    const handleFormCreate = () => {
         // e.preventDefault();
         setIsDialogueOpen(true);
     };
+
     return (
         <Dialog open={isDialogueOpen} onOpenChange={setIsDialogueOpen}>
-            <Button onClick={onSubmit}>Create Form</Button>
+            <Button onClick={handleFormCreate}>Create Form</Button>
             <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
                     <DialogTitle>Create a new form</DialogTitle>
