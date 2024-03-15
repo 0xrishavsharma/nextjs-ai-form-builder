@@ -43,7 +43,6 @@ const FormGenerator = (props: Props) => {
     }, [state.message, state.data]);
 
     const handleFormCreate = () => {
-        // e.preventDefault();
         setIsDialogueOpen(true);
     };
 
