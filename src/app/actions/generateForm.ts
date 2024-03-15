@@ -59,5 +59,9 @@ export async function generateForm(
         };
     } catch (error) {
         console.log(error);
+        return {
+            message: "Failed to generate form",
+            data: null,
+        };
     }
 }
