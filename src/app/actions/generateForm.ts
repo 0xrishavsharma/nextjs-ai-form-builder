@@ -23,9 +23,8 @@ export async function generateForm(
         };
     }
     const data = parsedDescription.data;
-    const promptExplanation = `Generate a survey based on the provided description. The survey should be in JSON format and contain an array of questions. Each question should have two properties: 'text' and 'fieldType'. The 'fieldType' can be one of the following: 'RadioGroup', 'Select', 'Input', 'Textarea', or 'Switch'.
-    For 'RadioGroup' and 'Select' field types, include a 'fieldOptions' array containing objects with 'text' and 'value' properties. For instance, the 'fieldOptions' array could be [{'text': 'Yes', 'value': 'yes'}, {'text': 'No', 'value': 'no'}].
-    For 'Input', 'Textarea', and 'Switch' field types, the 'fieldOptions' array should be empty, i.e., [].`;
+    const promptExplanation =
+        "Generate a survey based on the provided description. The survey should be in JSON format and contain an array of questions. Each question should have two properties: 'text' and 'fieldType'. The 'fieldType' can be one of the following: 'RadioGroup', 'Select', 'Input', 'Textarea', or 'Switch'. For 'RadioGroup' and 'Select' field types, include a 'fieldOptions' array containing objects with 'text' and 'value' properties. For instance, the 'fieldOptions' array could be [{'text': 'Yes', 'value': 'yes'}, {'text': 'No', 'value': 'no'}]. For 'Input', 'Textarea', and 'Switch' field types, the 'fieldOptions' array should be empty, i.e., [].";
 
     if (process.env.OPENAI_API_KEY === undefined) {
         console.error("OpenAI API Key is not set");
