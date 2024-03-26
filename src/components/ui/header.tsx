@@ -25,9 +25,9 @@ const Header = async (props: Props) => {
           <h1>AI Form Builder</h1>
           {session?.user ? (
             <div className="flex gap-6 items-center">
-              {session?.user?.name && session?.user?.image && (
+              {session.user.name && session.user.image && (
                 <Image
-                  src={session?.user?.image}
+                  src={session.user.image}
                   alt={`${session.user.name} Profile Picture`}
                   width={40}
                   height={40}

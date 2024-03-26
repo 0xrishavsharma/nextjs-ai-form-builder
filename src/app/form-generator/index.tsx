@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import { generateForm } from "@/actions/generateForm";
 import { useFormState, useFormStatus } from "react-dom";
 import { set } from "zod";
+import { useSession, signIn } from "next-auth/react";
 
 type Props = {};
 
@@ -34,6 +35,8 @@ export function HandleFormSubmit() {
 const FormGenerator = (props: Props) => {
   const [state, formAction] = useFormState(generateForm, initialState);
   const [isDialogueOpen, setIsDialogueOpen] = useState(false);
+  const session = useSession();
+  console.log("Session: ", session);
 
   useEffect(() => {
     if (state.message === "success") {
@@ -43,6 +46,10 @@ const FormGenerator = (props: Props) => {
   }, [state.message, state.data]);
 
   const handleFormCreate = () => {
+    if (!session.data?.user) {
+      signIn();
+      return;
+    }
     setIsDialogueOpen(true);
   };
 
