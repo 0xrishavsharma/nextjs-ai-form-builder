@@ -1,6 +1,3 @@
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import FormGenerator from "./form-generator";
 import Header from "@/components/ui/header";
 import { SessionProvider } from "next-auth/react";
