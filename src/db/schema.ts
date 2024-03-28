@@ -4,8 +4,19 @@ import {
   text,
   primaryKey,
   integer,
+  serial,
+  boolean,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
+import { relations } from "drizzle-orm";
+
+export const formElementTypes = pgEnum("form_element_type", [
+  "RadioGroup",
+  "Textarea",
+  "Select",
+  "Switch",
+]);
 
 export const users = pgTable("user", {
   id: text("id").notNull().primaryKey(),
@@ -58,3 +69,35 @@ export const verificationTokens = pgTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   }),
 );
+
+// To keep a track of forms a user has created through out their user journey
+export const forms = pgTable("form", {
+  id: text("id").notNull().primaryKey(),
+  name: text("name"),
+  description: text("description"),
+  userId: text("userId").notNull(),
+  published: boolean("published"),
+});
+
+// Defining the relation between form and other tables like questions and field options
+export const formRelations = relations(forms, ({ many, one }) => ({
+  questions: many(questions),
+  user: one(users, {
+    fields: [forms.userId],
+    references: [users.id],
+  }),
+}));
+
+export const questions = pgTable("question", {
+  id: serial("id").primaryKey(),
+  text: text("text"),
+  fieldType: formElementTypes("fieldType"),
+  formId: integer("formId"),
+});
+
+export const fieldOptions = pgTable("field_option", {
+  id: serial("id").primaryKey(),
+  text: text("text"),
+  value: text("value"),
+  questionId: integer("question_id"),
+});
