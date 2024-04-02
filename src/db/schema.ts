@@ -79,13 +79,15 @@ export const forms = pgTable("form", {
   published: boolean("published"),
 });
 
-// Defining the relation between form and other tables like questions and field options
+// Defining the RELATIONS between FORM and other tables like questions and field options
+//  - First argument of the relations function is the table we are defining the relations for (forms)
+//  - Second argument is a callback function that receives the relations object as an argument
 export const formRelations = relations(forms, ({ many, one }) => ({
-  questions: many(questions),
+  questions: many(questions), // First relation is a one-to-many relation between a form and questions
   user: one(users, {
     fields: [forms.userId],
     references: [users.id],
-  }),
+  }), // Second relation is a one-to-one relation between a form and the user. Here the one function is accepting two arguments. First is the table we are defining the relation for and second is defining how this connection work, it's an object that defines the fields and references for the relation to be established between the two tables (forms and users)
 }));
 
 export const questions = pgTable("question", {
@@ -95,9 +97,26 @@ export const questions = pgTable("question", {
   formId: integer("formId"),
 });
 
+// Defining the RELATIONS between QUESTION and other tables like field options and forms
+export const questionRelations = relations(questions, ({ many, one }) => ({
+  form: one(forms, {
+    fields: [questions.formId],
+    references: [forms.id],
+  }),
+  fieldOptions: many(fieldOptions), // This is a one-to-many relation between a question and field options
+}));
+
 export const fieldOptions = pgTable("field_option", {
   id: serial("id").primaryKey(),
   text: text("text"),
   value: text("value"),
   questionId: integer("question_id"),
 });
+
+// Defining the RELATIONS between FIELD_OPTION and questions
+export const fieldOptionsRelations = relations(fieldOptions, ({ one }) => ({
+  question: one(questions, {
+    fields: [fieldOptions.questionId],
+    references: [questions.id],
+  }),
+}));
