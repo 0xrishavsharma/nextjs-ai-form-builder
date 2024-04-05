@@ -71,8 +71,8 @@ export const verificationTokens = pgTable(
 );
 
 // To keep a track of forms a user has created through out their user journey
-export const forms = pgTable("form", {
-  id: text("id").notNull().primaryKey(),
+export const forms = pgTable("forms", {
+  id: serial("id").notNull().primaryKey(),
   name: text("name"),
   description: text("description"),
   userId: text("userId").notNull(),
@@ -90,7 +90,7 @@ export const formRelations = relations(forms, ({ many, one }) => ({
   }), // Second relation is a one-to-one relation between a form and the user. Here the one function is accepting two arguments. First is the table we are defining the relation for and second is defining how this connection work, it's an object that defines the fields and references for the relation to be established between the two tables (forms and users)
 }));
 
-export const questions = pgTable("question", {
+export const questions = pgTable("questions", {
   id: serial("id").primaryKey(),
   text: text("text"),
   fieldType: formElementTypes("fieldType"),
@@ -106,7 +106,7 @@ export const questionRelations = relations(questions, ({ many, one }) => ({
   fieldOptions: many(fieldOptions), // This is a one-to-many relation between a question and field options
 }));
 
-export const fieldOptions = pgTable("field_option", {
+export const fieldOptions = pgTable("field_options", {
   id: serial("id").primaryKey(),
   text: text("text"),
   value: text("value"),
