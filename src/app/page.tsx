@@ -1,7 +1,13 @@
 import FormGenerator from "./form-generator";
 import Header from "@/components/ui/header";
 import { SessionProvider } from "next-auth/react";
-export default function Home() {
+import { db } from "@/db";
+import { forms } from "@/db/schema";
+
+export default async function Home() {
+  const forms = await db.query.forms.findMany();
+  console.log("Forms: ", forms);
+
   return (
     <SessionProvider>
       <Header />
